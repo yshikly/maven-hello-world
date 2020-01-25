@@ -16,12 +16,32 @@ steps:
 - script: 
     cd my-app;
     mvn clean;
+  displayName: 'Clean project'
+
+- script: 
+    cd my-app;
     mvn compile;
+  displayName: 'Compile main source code'
+
+- script: 
+    cd my-app;
     mvn test-compile;
+  displayName: 'Compile test source code'
+
+- script: 
+    cd my-app;
     mvn test;
+  displayName: 'Run tests'
+
+- script: 
+    cd my-app;
     mvn install;
+  displayName: 'Build application'
+
+- script: 
+    cd my-app;
     java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App;
-  displayName: 'Build project my-app'
+  displayName: 'Run application'
 
 #- task: CopyFiles@2
 #  inputs:
@@ -35,13 +55,14 @@ steps:
 #    artifactName: HelloWorld
 
 - task: PublishPipelineArtifact@1
+  displayName: 'Publish artifact'
   inputs:
     #targetPath: '$(Pipeline.Workspace)' 
     targetPath: 'my-app/target/my-app-1.0-SNAPSHOT.jar'
     artifactName: 'HelloWorld'
 
 - task: Docker@2
-  displayName: Build an image
+  displayName: 'Build an image'
   inputs:
     repository: $(imageName)
     command: buildAndPush
