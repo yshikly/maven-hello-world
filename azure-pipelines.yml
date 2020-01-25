@@ -14,33 +14,27 @@ variables:
 
 steps:
 - script: 
-    cd my-app;
-    mvn clean;
+    cd my-app; mvn clean;
   displayName: 'Clean project'
 
 - script: 
-    cd my-app;
-    mvn compile;
+    cd my-app; mvn compile;
   displayName: 'Compile main source code'
 
 - script: 
-    cd my-app;
-    mvn test-compile;
+    cd my-app; mvn test-compile;
   displayName: 'Compile test source code'
 
 - script: 
-    cd my-app;
-    mvn test;
+    cd my-app; mvn test;
   displayName: 'Run tests'
 
 - script: 
-    cd my-app;
-    mvn install;
+    cd my-app; mvn install;
   displayName: 'Build application'
 
 - script: 
-    cd my-app;
-    java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App;
+    cd my-app; java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App;
   displayName: 'Run application'
 
 #- task: CopyFiles@2
