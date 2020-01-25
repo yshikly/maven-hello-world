@@ -1,0 +1,49 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageName: 'helloWorldImg'
+
+steps:
+- script: 
+    cd my-app;
+    mvn clean;
+    mvn compile;
+    mvn test-compile;
+    mvn test;
+    mvn install;
+    java -cp target/my-app-1.0-SNAPSHOT.jar com.mycompany.app.App;
+  displayName: 'Build project my-app'
+
+#- task: CopyFiles@2
+#  inputs:
+#    contents: 'target/**'
+#    targetFolder: $(Build.ArtifactStagingDirectory)
+#  displayName: 'Copy artifact to staging directory'
+
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    pathToPublish: $(Build.ArtifactStagingDirectory)
+#    artifactName: HelloWorld
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    #targetPath: '$(Pipeline.Workspace)' 
+    targetPath: 'my-app/target/my-app-1.0-SNAPSHOT.jar'
+    artifactName: 'HelloWorld'
+
+- task: Docker@2
+  displayName: Build an image
+  inputs:
+    repository: $(imageName)
+    command: buildAndPush
+    containerRegistry: helloWorldReg
+    Dockerfile: my-app/Dockerfile
